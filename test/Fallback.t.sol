@@ -1,9 +1,9 @@
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.13;
 
 import "forge-std/Test.sol";
-import "../levels/01-FallbackFactory.sol";
-import "../core/Ethernaut.sol";
+import "../src/levels/01-FallbackFactory.sol";
+import "../src/core/Ethernaut.sol";
 
 contract FallbackTest is Test {
     Ethernaut ethernaut;
