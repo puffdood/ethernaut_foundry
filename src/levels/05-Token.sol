@@ -10,10 +10,16 @@ contract Token {
     }
 
     function transfer(address _to, uint256 _value) public returns (bool) {
-        require(balances[msg.sender] - _value >= 0);
-        balances[msg.sender] -= _value;
-        balances[_to] += _value;
-        return true;
+        // We updated this with unchecked so it behaves as per the original code
+        // written to be compiled with solidity ^0.6.0
+        // As of ^0.8.0, arithmetic ops will revert on over/underflow
+        // On ^0.6.0, it will wrap
+        unchecked {
+            require(balances[msg.sender] - _value >= 0);
+            balances[msg.sender] -= _value;
+            balances[_to] += _value;
+            return true;
+        }
     }
 
     function balanceOf(address _owner) public view returns (uint256 balance) {
