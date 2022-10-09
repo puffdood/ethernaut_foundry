@@ -13,12 +13,18 @@ contract Reentrance {
     }
 
     function withdraw(uint256 _amount) public {
-        if (balances[msg.sender] >= _amount) {
-            (bool result, ) = msg.sender.call{value: _amount}("");
-            if (result) {
-                _amount;
+        // We updated this with unchecked so it behaves as per the original code
+        // written to be compiled with solidity ^0.6.0
+        // As of ^0.8.0, arithmetic ops will revert on over/underflow
+        // On ^0.6.0, it will wrap
+        unchecked {
+            if (balances[msg.sender] >= _amount) {
+                (bool result, ) = msg.sender.call{value: _amount}("");
+                if (result) {
+                    _amount;
+                }
+                balances[msg.sender] -= _amount;
             }
-            balances[msg.sender] -= _amount;
         }
     }
 
